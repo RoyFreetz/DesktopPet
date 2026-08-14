@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "desktop-pet",
+  "version": "1.0.0",
+  "description": "WinUI3 Desktop Pet with voice interaction",
+  "dependencies": [
+    {
+      "name": "nlohmann-json",
+      "version>=": "3.11.3"
+    },
+    {
+      "name": "ms-gsl",
+      "version>=": "4.0.0"
+    }
+  ],
+  "builtin-baseline": "3508985146f1b1d248c67ead13f8f54be5b4f5da",
+  "overrides": [],
+  "features": {}
+}
