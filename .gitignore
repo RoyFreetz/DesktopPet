@@ -1,0 +1,34 @@
+## Visual Studio / C++
+.vs/
+[Bb]in/
+[Oo]bj/
+x64/
+x86/
+ARM64/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.vcxproj.user
+*.aps
+*.pch
+*.pdb
+*.ilk
+
+## NuGet packages folder (packages.config restore)
+packages/
+
+## vcpkg manifest-mode install dir
+vcpkg_installed/
+
+## Generated app icons (produced by make-images.ps1 at pre-build)
+DesktopPet/Images/
+
+## Bundle artifacts
+AppPackages/
+BundleArtifacts/
+*.appx
+*.msix
+*.appxbundle
+*.msixbundle
+*.pfx
