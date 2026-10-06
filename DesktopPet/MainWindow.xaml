@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="DesktopPet.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <!-- 品红背景配合 WS_EX_LAYERED 颜色键实现窗口透明与空白处点击穿透 -->
+    <Grid x:Name="RootGrid" Background="#FFFF00FF">
+        <Canvas x:Name="Stage" SizeChanged="Stage_SizeChanged">
+
+            <!-- 气泡 -->
+            <Border x:Name="Bubble"
+                    Padding="10,6"
+                    CornerRadius="12"
+                    Background="#FFFDF6E9"
+                    BorderBrush="#FFE8B04B"
+                    BorderThickness="1.5"
+                    Visibility="Collapsed">
+                <TextBlock x:Name="BubbleText"
+                           FontSize="13"
+                           Foreground="#FF5A4632"
+                           TextWrapping="Wrap"
+                           MaxWidth="220"/>
+            </Border>
+
+            <!-- 小橘猫本体 150x180 -->
+            <Grid x:Name="Pet"
+                  Width="150" Height="180"
+                  RenderTransformOrigin="0.5,1"
+                  PointerPressed="Pet_PointerPressed"
+                  PointerMoved="Pet_PointerMoved"
+                  PointerReleased="Pet_PointerReleased">
+                <Grid.RenderTransform>
+                    <ScaleTransform x:Name="PetScale"/>
+                </Grid.RenderTransform>
+                <Grid.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="聊天" Click="Menu_Chat"/>
+                        <MenuFlyoutItem Text="喂食" Click="Menu_Feed"/>
+                        <MenuFlyoutItem Text="散散步" Click="Menu_Walk"/>
+                        <MenuFlyoutSeparator/>
+                        <MenuFlyoutItem Text="拜拜" Click="Menu_Quit"/>
+                    </MenuFlyout>
+                </Grid.ContextFlyout>
+
+                <Canvas>
+                    <!-- 尾巴 -->
+                    <Ellipse Canvas.Left="106" Canvas.Top="102" Width="38" Height="16"
+                             Fill="#FFF0A050" RenderTransformOrigin="0.2,0.5">
+                        <Ellipse.RenderTransform>
+                            <RotateTransform Angle="-30"/>
+                        </Ellipse.RenderTransform>
+                    </Ellipse>
+                    <!-- 耳朵 -->
+                    <Polygon Points="0,38 16,0 42,30" Canvas.Left="16" Canvas.Top="0"
+                             Fill="#FFF0A050" Stroke="#FFDE9137" StrokeThickness="2"/>
+                    <Polygon Points="8,30 34,0 50,38" Canvas.Left="92" Canvas.Top="0"
+                             Fill="#FFF0A050" Stroke="#FFDE9137" StrokeThickness="2"/>
+                    <Polygon Points="8,32 18,10 34,27" Canvas.Left="22" Canvas.Top="8" Fill="#FFFFC7C7"/>
+                    <Polygon Points="16,27 32,10 42,32" Canvas.Left="96" Canvas.Top="8" Fill="#FFFFC7C7"/>
+                    <!-- 身体 -->
+                    <Ellipse Canvas.Left="15" Canvas.Top="42" Width="120" Height="104"
+                             Fill="#FFF5B45C" Stroke="#FFDE9137" StrokeThickness="2"/>
+                    <!-- 脚 -->
+                    <Ellipse Canvas.Left="32" Canvas.Top="136" Width="34" Height="16" Fill="#FFEEA94E"/>
+                    <Ellipse Canvas.Left="84" Canvas.Top="136" Width="34" Height="16" Fill="#FFEEA94E"/>
+                    <!-- 眼睛（可缩放用于眨眼） -->
+                    <Grid Canvas.Left="45" Canvas.Top="82" Width="20" Height="26" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <ScaleTransform x:Name="LeftEyeScale"/>
+                        </Grid.RenderTransform>
+                        <Ellipse Width="14" Height="20" Fill="#FF3A2C22" HorizontalAlignment="Center"/>
+                        <Ellipse Width="5" Height="6" Fill="White" Margin="3,4,0,0"
+                                 HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    </Grid>
+                    <Grid Canvas.Left="85" Canvas.Top="82" Width="20" Height="26" RenderTransformOrigin="0.5,0.5">
+                        <Grid.RenderTransform>
+                            <ScaleTransform x:Name="RightEyeScale"/>
+                        </Grid.RenderTransform>
+                        <Ellipse Width="14" Height="20" Fill="#FF3A2C22" HorizontalAlignment="Center"/>
+                        <Ellipse Width="5" Height="6" Fill="White" Margin="3,4,0,0"
+                                 HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                    </Grid>
+                    <!-- 腮红 -->
+                    <Ellipse Canvas.Left="30" Canvas.Top="110" Width="18" Height="9" Fill="#66FF8C7A"/>
+                    <Ellipse Canvas.Left="102" Canvas.Top="110" Width="18" Height="9" Fill="#66FF8C7A"/>
+                    <!-- 嘴 -->
+                    <Path Data="M 66,116 Q 71,122 75,116 Q 80,122 84,116"
+                          Stroke="#FF7A4A28" StrokeThickness="2" StrokeLineJoin="Round"/>
+                </Canvas>
+            </Grid>
+        </Canvas>
+
+        <!-- 聊天面板 -->
+        <Border x:Name="ChatPanel"
+                Width="280"
+                Padding="12"
+                Margin="20"
+                CornerRadius="12"
+                Background="#F2FDF6E9"
+                BorderBrush="#FFE8B04B"
+                BorderThickness="1.5"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Visibility="Collapsed">
+            <StackPanel Spacing="8">
+                <TextBlock Text="跟小橘聊天" FontWeight="SemiBold" Foreground="#FF5A4632"/>
+                <TextBox x:Name="InputBox" PlaceholderText="说点什么吧…" KeyDown="InputBox_KeyDown"/>
+                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                    <Button x:Name="MicButton" Content="语音" Click="Mic_Click"/>
+                    <Button x:Name="SendButton" Content="发送" Style="{StaticResource AccentButtonStyle}" Click="Send_Click"/>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
